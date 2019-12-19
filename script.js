@@ -16,16 +16,8 @@ $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
 
   });
   
-        // current date and time
-        var d = new Date();
-        var hours = d.getHours();
 
-        console.log(hours);
-
-        
-
-      //create var time = localStorage.getItem("time") grab it by the Key.. then the value will poll
-
+      // gets input from local storage
       function getData() {
     
         var hour9 = localStorage.getItem("hour-9");
@@ -57,17 +49,32 @@ $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
 
       }
 
+        // current date and time
+        var d = new Date();
+        var hours = d.getHours();
 
       // set colors for time
 
-      function setColors() {
-        var isLate = moment().isAfter(hours);
-        if(isLate) {
-            $(value).addClass('past')
+      $(".time-block").each(function() {
+        // grabs hours, compares to each timeblock ie (hour-9, compares the 9 to current hour)
+        var compareHours = parseInt($(this).attr("id").split("-")[1]);
+        // creates military time
+        if (compareHours < 9) {
+          compareHours += 12
         }
-      }
+        // compares hours and adds class to set colors
+        if (compareHours < hours) {
+          $(this).addClass("past");
+        } else if (compareHours === hours) {
+          $(this).removeClass("past");
+          $(this).addClass("present");
+        } else {
+          $(this).removeClass("past");
+          $(this).removeClass("present");
+          $(this).addClass("future");
 
-      console.log(setColors())
+        }
+      })
 
 
 
